@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import LenisProvider from "./components/LenisProvider";
+import FloatingBackground from "./components/FloatingBackground";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
               <ToastProvider>
                 <Navbar />
                 <CartDrawer />
+                <FloatingBackground />
                 {children}
                 <Footer />
                 <WhatsAppFloat />
