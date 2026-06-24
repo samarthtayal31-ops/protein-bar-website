@@ -62,8 +62,8 @@ export default function ProductCard({ product }) {
       <div className="pcard__visual">
         {product.barSvg ? (
           <svg
-            width="140"
-            height="50"
+            width="220"
+            height="80"
             viewBox="0 0 140 50"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -109,8 +109,8 @@ export default function ProductCard({ product }) {
         ) : (
           /* Fallback: generic bar illustration */
           <svg
-            width="140"
-            height="50"
+            width="220"
+            height="80"
             viewBox="0 0 140 50"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
