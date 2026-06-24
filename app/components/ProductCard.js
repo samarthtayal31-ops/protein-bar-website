@@ -8,7 +8,7 @@ export default function ProductCard({ product }) {
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [metersAnimated, setMetersAnimated] = useState(false);
-  const { addToCart } = useCart();
+  const { cart, addToCart, updateQuantity } = useCart();
   const { showToast } = useToast();
 
   // IntersectionObserver for fade-up and meter fill animations
@@ -47,6 +47,9 @@ export default function ProductCard({ product }) {
   // Energy and protein percentages (for meter fill bars)
   const energyPercent = product.energyPercent || Math.min((product.energy || 200) / 5, 100);
   const proteinPercent = product.proteinPercent || Math.min(((product.protein || 25) / 50) * 100, 100);
+
+  // Check if item is already in cart
+  const cartItem = cart.find((item) => item.product.id === product.id);
 
   return (
     <div
@@ -208,10 +211,28 @@ export default function ProductCard({ product }) {
           <span className="pcard__amount">{product.price}</span>
         </div>
 
-        {/* Add to Cart */}
-        <button className="pcard__btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
+        {/* Add to Cart or Quantity Selector */}
+        {cartItem ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg)', borderRadius: 'var(--radius-sm)', overflow: 'hidden', border: '1px solid var(--border)', marginTop: 'auto' }}>
+            <button 
+              onClick={() => updateQuantity(product.id, cartItem.quantity - 1)}
+              style={{ padding: '0.8rem 1.2rem', background: 'var(--surface)', border: 'none', color: 'var(--text)', fontWeight: 800, cursor: 'pointer', fontSize: '1.2rem', transition: 'background 0.2s' }}
+              onMouseOver={(e) => e.target.style.background = 'var(--border)'}
+              onMouseOut={(e) => e.target.style.background = 'var(--surface)'}
+            >-</button>
+            <span style={{ fontWeight: 800, fontSize: '1.2rem' }}>{cartItem.quantity} in cart</span>
+            <button 
+              onClick={() => updateQuantity(product.id, cartItem.quantity + 1)}
+              style={{ padding: '0.8rem 1.2rem', background: 'var(--surface)', border: 'none', color: 'var(--text)', fontWeight: 800, cursor: 'pointer', fontSize: '1.2rem', transition: 'background 0.2s' }}
+              onMouseOver={(e) => e.target.style.background = 'var(--border)'}
+              onMouseOut={(e) => e.target.style.background = 'var(--surface)'}
+            >+</button>
+          </div>
+        ) : (
+          <button className="pcard__btn" onClick={handleAddToCart}>
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );
