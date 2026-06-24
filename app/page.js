@@ -7,6 +7,7 @@ import ProductCard from '@/app/components/ProductCard';
 import FadeIn from '@/app/components/FadeIn';
 import FAQ from '@/app/components/FAQ';
 import Reviews from '@/app/components/Reviews';
+import WhyFuelbar from '@/app/components/WhyFuelbar';
 
 export default function Home() {
   const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
@@ -206,6 +207,7 @@ export default function Home() {
         </div>
       </section>
 
+      <WhyFuelbar />
       <Reviews />
       <FAQ />
 
