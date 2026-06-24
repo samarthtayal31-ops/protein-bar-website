@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { products, getProductsByFlavor } from '@/app/lib/products';
 import ProductCard from '@/app/components/ProductCard';
+import FadeIn from '@/app/components/FadeIn';
 
 export default function Home() {
   const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
@@ -48,10 +49,12 @@ export default function Home() {
       {/* PRODUCTS SECTION */}
       <section id="products" style={{ padding: '5rem 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <span className="text-gold" style={{ fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem' }}>CHOOSE YOUR FUEL</span>
-            <h2 className="heading-lg" style={{ marginTop: '0.5rem' }}>THREE FLAVORS. THREE SIZES.</h2>
-          </div>
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span className="text-gold" style={{ fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem' }}>CHOOSE YOUR FUEL</span>
+              <h2 className="heading-lg" style={{ marginTop: '0.5rem' }}>THREE FLAVORS. THREE SIZES.</h2>
+            </div>
+          </FadeIn>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '3rem' }}>
             <button
@@ -71,8 +74,10 @@ export default function Home() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            {selectedProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+            {selectedProducts.map((product, index) => (
+              <FadeIn key={product.id} delay={index * 0.1}>
+                <ProductCard product={product} />
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -80,62 +85,30 @@ export default function Home() {
 
       {/* SUGAR FREE BANNER */}
       <section style={{ padding: '4rem 0', background: 'var(--bg-card)' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'center' }}>
-          <div>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚫</div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Zero Added Sugar</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Sweetened only with natural Jaggery, Dates, and Honey.</p>
+        <FadeIn yOffset={20}>
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'center' }}>
+            <div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚫</div>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Zero Added Sugar</h3>
+              <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Sweetened only with natural Jaggery, Dates, and Honey.</p>
+            </div>
+            <div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🥛</div>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>100% Complete Whey</h3>
+              <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>We use premium whey protein concentrate. No cheap soy fillers.</p>
+            </div>
+            <div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>❤️</div>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Diabetic Friendly</h3>
+              <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Low GI ingredients make it safe in limited portions.</p>
+            </div>
           </div>
-          <div>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🥛</div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>100% Complete Whey</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>We use premium whey protein concentrate. No cheap soy fillers.</p>
-          </div>
-          <div>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>❤️</div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Diabetic Friendly</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Low GI ingredients make it safe in limited portions.</p>
-          </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* NUTRITION SECTION */}
       <section id="nutrition" style={{ padding: '6rem 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <span className="text-gold" style={{ fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem' }}>TRANSPARENCY FIRST</span>
-            <h2 className="heading-lg" style={{ marginTop: '0.5rem' }}>NUTRITION FACTS</h2>
-          </div>
-
-          <div style={{ maxWidth: '600px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)' }}>
-              {['40g', '60g', '90g'].map(size => (
-                <button
-                  key={size}
-                  onClick={() => setNutritionSize(size)}
-                  style={{ flex: 1, padding: '1rem', background: nutritionSize === size ? 'var(--bg-dark)' : 'transparent', border: 'none', color: nutritionSize === size ? 'var(--text)' : 'var(--muted)', fontWeight: 800, cursor: 'pointer', fontFamily: 'var(--font-bebas)', fontSize: '1.2rem', letterSpacing: '1px' }}
-                >
-                  {size === '40g' ? 'SPARK (40g)' : size === '60g' ? 'POWER (60g)' : 'BEAST (90g)'}
-                </button>
-              ))}
-            </div>
-            <div style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '4px solid var(--text)', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
-                <span style={{ fontWeight: 800, fontSize: '1.5rem' }}>Amount Per Serving</span>
-              </div>
-              
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', padding: '0.75rem 0' }}>
-                <span style={{ fontWeight: 800 }}>Calories</span>
-                <span style={{ fontWeight: 800 }}>{nutritionSize === '40g' ? 150 : nutritionSize === '60g' ? 220 : 280} kcal</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', padding: '0.75rem 0' }}>
-                <span style={{ fontWeight: 800 }}>Protein</span>
-                <span style={{ fontWeight: 800 }}>{nutritionSize === '40g' ? '10g' : nutritionSize === '60g' ? '15g' : '22.5g'}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', padding: '0.75rem 0' }}>
-                <span>Total Fat</span>
-                <span>{nutritionSize === '40g' ? '5g' : nutritionSize === '60g' ? '7g' : '9g'}</span>
-              </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', padding: '0.75rem 0' }}>
                 <span style={{ paddingLeft: '1rem', color: 'var(--muted)' }}>Saturated Fat</span>
                 <span>{nutritionSize === '40g' ? '2g' : nutritionSize === '60g' ? '3g' : '4g'}</span>

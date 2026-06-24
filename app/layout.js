@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import LenisProvider from "./components/LenisProvider";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -31,17 +32,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${bebasNeue.variable} ${nunito.variable}`}>
       <body>
-        <AuthProvider>
-          <CartProvider>
-            <ToastProvider>
-              <Navbar />
-              <CartDrawer />
-              {children}
-              <Footer />
-              <WhatsAppFloat />
-            </ToastProvider>
-          </CartProvider>
-        </AuthProvider>
+        <LenisProvider>
+          <AuthProvider>
+            <CartProvider>
+              <ToastProvider>
+                <Navbar />
+                <CartDrawer />
+                {children}
+                <Footer />
+                <WhatsAppFloat />
+              </ToastProvider>
+            </CartProvider>
+          </AuthProvider>
+        </LenisProvider>
       </body>
     </html>
   );
