@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/app/context/CartContext';
 import { useToast } from '@/app/context/ToastContext';
+import { db } from '@/app/lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const WHATSAPP_NUMBER = '916263099627';
 const FREE_DELIVERY_THRESHOLD = 500;
@@ -113,17 +115,23 @@ export default function CheckoutPage() {
   const handleCODOrder = async () => {
     setIsProcessing(true);
     try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildOrderData()),
-      });
+      const orderPayload = buildOrderData();
+      
+      const timestamp = Date.now();
+      const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const orderId = `FB-${timestamp}-${randomSuffix}`;
+      
+      const orderDoc = {
+        ...orderPayload,
+        orderId,
+        status: 'placed',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
 
-      if (!res.ok) {
-        throw new Error('Failed to place order');
-      }
+      // Write directly to Firestore from the client
+      await addDoc(collection(db, 'orders'), orderDoc);
 
-      const { orderId } = await res.json();
       clearCart();
       showToast('Order placed successfully! 🎉', 'success');
       router.push(`/order-success/${orderId}`);
