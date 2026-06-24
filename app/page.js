@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { products, getProductsByFlavor } from '@/app/lib/products';
 import ProductCard from '@/app/components/ProductCard';
+import FadeIn from '@/app/components/FadeIn';
 
 export default function Home() {
   const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
@@ -71,8 +72,10 @@ export default function Home() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            {selectedProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+            {selectedProducts.map((product, index) => (
+              <FadeIn key={product.id} delay={index * 0.1}>
+                <ProductCard product={product} />
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -81,21 +84,21 @@ export default function Home() {
       {/* SUGAR FREE BANNER */}
       <section style={{ padding: '4rem 0', background: 'var(--bg-card)' }}>
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'center' }}>
-          <div>
+          <FadeIn delay={0}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚫</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Zero Added Sugar</h3>
             <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Sweetened only with natural Jaggery, Dates, and Honey.</p>
-          </div>
-          <div>
+          </FadeIn>
+          <FadeIn delay={0.2}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🥛</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>100% Complete Whey</h3>
             <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>We use premium whey protein concentrate. No cheap soy fillers.</p>
-          </div>
-          <div>
+          </FadeIn>
+          <FadeIn delay={0.4}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>❤️</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-bebas)', letterSpacing: '1px' }}>Diabetic Friendly</h3>
             <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Low GI ingredients make it safe in limited portions.</p>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
