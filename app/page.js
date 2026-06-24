@@ -6,7 +6,7 @@ import { products, getProductsByFlavor } from '@/app/lib/products';
 import ProductCard from '@/app/components/ProductCard';
 
 export default function Home() {
-  const [flavorTab, setFlavorTab] = useState('choc');
+  const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
   const [nutritionSize, setNutritionSize] = useState('40g');
 
   const selectedProducts = getProductsByFlavor(flavorTab);
@@ -55,16 +55,16 @@ export default function Home() {
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '3rem' }}>
             <button
-              className={`btn-outline ${flavorTab === 'choc' ? 'active' : ''}`}
-              onClick={() => setFlavorTab('choc')}
-              style={flavorTab === 'choc' ? { background: 'var(--hazel)', color: '#fff', borderColor: 'var(--hazel)' } : {}}
+              className={`btn-outline ${flavorTab === 'choc-hazelnut' ? 'active' : ''}`}
+              onClick={() => setFlavorTab('choc-hazelnut')}
+              style={flavorTab === 'choc-hazelnut' ? { background: 'var(--hazel)', color: '#fff', borderColor: 'var(--hazel)' } : {}}
             >
               🍫 Choc Hazelnut
             </button>
             <button
-              className={`btn-outline ${flavorTab === 'dates' ? 'active' : ''}`}
-              onClick={() => setFlavorTab('dates')}
-              style={flavorTab === 'dates' ? { background: 'var(--hazel)', color: '#fff', borderColor: 'var(--hazel)' } : {}}
+              className={`btn-outline ${flavorTab === 'dates-delight' ? 'active' : ''}`}
+              onClick={() => setFlavorTab('dates-delight')}
+              style={flavorTab === 'dates-delight' ? { background: 'var(--hazel)', color: '#fff', borderColor: 'var(--hazel)' } : {}}
             >
               🍯 Dates Delight
             </button>
