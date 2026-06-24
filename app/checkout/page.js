@@ -83,13 +83,13 @@ export default function CheckoutPage() {
       name: name.trim(),
       email: email.trim(),
       phone: `+91${phone.trim()}`,
-    },
-    address: {
-      line1: address1.trim(),
-      line2: address2.trim(),
-      city: city.trim(),
-      state: state.trim(),
-      pinCode: pinCode.trim(),
+      address: {
+        line1: address1.trim(),
+        line2: address2.trim(),
+        city: city.trim(),
+        state: state.trim(),
+        pinCode: pinCode.trim(),
+      },
     },
     items: cart.map((item) => ({
       productId: item.product.id,
@@ -103,8 +103,8 @@ export default function CheckoutPage() {
     deliveryFee,
     codFee,
     discount,
-    coupon: couponApplied?.code || null,
-    total,
+    couponCode: couponApplied?.code || null,
+    totalAmount: total,
     paymentMethod,
   });
 

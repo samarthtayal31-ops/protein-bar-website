@@ -1,24 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const STATUSES = ['All', 'Placed', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
 
-const MOCK_ORDERS = [
-  { id: 'FB-1048', customer: 'Arjun Mehta', email: 'arjun@email.com', phone: '+91 98765 43210', items: [{ name: 'POWER BAR Choc', qty: 2, price: 90 }], total: 180, payment: 'COD', status: 'placed', date: '22 Jun 2026', address: '12, MG Road, Bengaluru 560001' },
-  { id: 'FB-1047', customer: 'Priya Sharma', email: 'priya@email.com', phone: '+91 87654 32109', items: [{ name: 'BEAST BAR Choc', qty: 1, price: 120 }, { name: 'SPARK BAR Dates', qty: 1, price: 65 }], total: 185, payment: 'UPI', status: 'confirmed', date: '22 Jun 2026', address: '45, Linking Road, Mumbai 400050' },
-  { id: 'FB-1046', customer: 'Rohan Verma', email: 'rohan@email.com', phone: '+91 76543 21098', items: [{ name: 'SPARK BAR Choc', qty: 3, price: 60 }], total: 180, payment: 'UPI', status: 'shipped', date: '21 Jun 2026', address: '78, Civil Lines, Delhi 110054' },
-  { id: 'FB-1045', customer: 'Aisha Khan', email: 'aisha@email.com', phone: '+91 65432 10987', items: [{ name: 'POWER BAR Dates', qty: 1, price: 95 }], total: 95, payment: 'COD', status: 'delivered', date: '20 Jun 2026', address: '23, Park Street, Kolkata 700016' },
-  { id: 'FB-1044', customer: 'Vikram Singh', email: 'vikram@email.com', phone: '+91 54321 09876', items: [{ name: 'BEAST BAR Dates', qty: 2, price: 125 }], total: 250, payment: 'UPI', status: 'cancelled', date: '19 Jun 2026', address: '56, Jubilee Hills, Hyderabad 500033' },
-  { id: 'FB-1043', customer: 'Sneha Patel', email: 'sneha@email.com', phone: '+91 43210 98765', items: [{ name: 'POWER BAR Choc', qty: 1, price: 90 }, { name: 'POWER BAR Dates', qty: 1, price: 95 }], total: 185, payment: 'COD', status: 'placed', date: '18 Jun 2026', address: '89, SG Highway, Ahmedabad 380015' },
-  { id: 'FB-1042', customer: 'Karthik Rajan', email: 'karthik@email.com', phone: '+91 32109 87654', items: [{ name: 'BEAST BAR Choc', qty: 3, price: 120 }], total: 360, payment: 'UPI', status: 'shipped', date: '17 Jun 2026', address: '34, Anna Nagar, Chennai 600040' },
-  { id: 'FB-1041', customer: 'Neha Gupta', email: 'neha@email.com', phone: '+91 21098 76543', items: [{ name: 'SPARK BAR Dates', qty: 5, price: 65 }], total: 325, payment: 'COD', status: 'delivered', date: '16 Jun 2026', address: '67, Arera Colony, Bhopal 462016' },
-];
-
 export default function AdminOrders() {
   const [filter, setFilter] = useState('All');
-  const [orders, setOrders] = useState(MOCK_ORDERS);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const res = await fetch('/api/orders');
+        const data = await res.json();
+        if (data.success) {
+          // Map backend format to UI format
+          const mappedOrders = data.orders.map(o => {
+            const dateObj = new Date(o.createdAt);
+            const dateStr = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const addressObj = o.customer.address || {};
+            const addressStr = typeof addressObj === 'object' 
+              ? `${addressObj.line1 || ''}, ${addressObj.line2 || ''}, ${addressObj.city || ''} ${addressObj.pinCode || ''}`.replace(/, ,/g, ',').trim()
+              : String(addressObj);
+
+            return {
+              id: o.orderId,
+              customer: o.customer.name,
+              email: o.customer.email,
+              phone: o.customer.phone,
+              items: o.items.map(i => ({ name: `${i.name} ${i.flavor || ''}`.trim(), qty: i.quantity, price: i.price })),
+              total: o.totalAmount,
+              payment: o.paymentMethod === 'cod' ? 'COD' : 'ONLINE',
+              status: o.status,
+              date: dateStr,
+              address: addressStr.replace(/, $/, ''),
+            };
+          });
+          setOrders(mappedOrders);
+        }
+      } catch (err) {
+        console.error('Failed to fetch orders:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrders();
+  }, []);
 
   const filtered = filter === 'All'
     ? orders
@@ -119,7 +148,14 @@ export default function AdminOrders() {
         </table>
       </div>
 
-      {filtered.length === 0 && (
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text)' }}>
+          <div className="spinner" style={{ margin: '0 auto 1rem', width: '24px', height: '24px' }}></div>
+          Loading orders...
+        </div>
+      )}
+
+      {!loading && filtered.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--muted)' }}>
           No orders found for &ldquo;{filter}&rdquo; status.
         </div>

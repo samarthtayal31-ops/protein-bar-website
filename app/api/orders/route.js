@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/app/lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -71,8 +73,9 @@ export async function POST(request) {
       updatedAt: new Date().toISOString(),
     };
 
-    // TODO: Save order to Firestore
-    // const docRef = await addDoc(collection(db, 'orders'), order);
+    // Save order to Firestore
+    const docRef = await addDoc(collection(db, 'orders'), order);
+    order.id = docRef.id;
 
     return NextResponse.json(
       { success: true, orderId, order },
@@ -93,43 +96,15 @@ export async function POST(request) {
  */
 export async function GET() {
   try {
-    // TODO: Fetch from Firestore with admin auth check
-    // const querySnapshot = await getDocs(collection(db, 'orders'));
-
-    // Mock orders for development
-    const orders = [
-      {
-        orderId: 'FB-1719158400000-A1B2',
-        items: [
-          { productId: 'power-choc', name: 'POWER BAR', flavor: 'Chocolate Hazelnut', size: '55g', quantity: 2, price: 90 },
-          { productId: 'spark-dates', name: 'SPARK BAR', flavor: 'Dates & Walnut', size: '40g', quantity: 1, price: 65 },
-        ],
-        customer: { name: 'Rahul Sharma', email: 'rahul@example.com', phone: '+919876543210', address: '42 MG Road, Bangalore 560001' },
-        paymentMethod: 'online',
-        paymentId: 'pay_mock123',
-        totalAmount: 245,
-        deliveryFee: 0,
-        couponCode: null,
-        status: 'delivered',
-        createdAt: '2025-06-23T10:00:00.000Z',
-        updatedAt: '2025-06-25T14:30:00.000Z',
-      },
-      {
-        orderId: 'FB-1719244800000-C3D4',
-        items: [
-          { productId: 'beast-choc', name: 'BEAST BAR', flavor: 'Chocolate Hazelnut', size: '70g', quantity: 3, price: 120 },
-        ],
-        customer: { name: 'Priya Patel', email: 'priya@example.com', phone: '+919123456789', address: '15 Marine Drive, Mumbai 400020' },
-        paymentMethod: 'cod',
-        paymentId: null,
-        totalAmount: 360,
-        deliveryFee: 40,
-        couponCode: 'FIRST10',
-        status: 'shipped',
-        createdAt: '2025-06-24T08:15:00.000Z',
-        updatedAt: '2025-06-25T09:00:00.000Z',
-      },
-    ];
+    // Fetch from Firestore
+    const ordersRef = collection(db, 'orders');
+    const q = query(ordersRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const orders = [];
+    querySnapshot.forEach((doc) => {
+      orders.push({ id: doc.id, ...doc.data() });
+    });
 
     return NextResponse.json(
       { success: true, orders, total: orders.length },

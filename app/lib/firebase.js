@@ -15,15 +15,9 @@ let app;
 let auth;
 let db;
 
-if (typeof window !== 'undefined') {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-  auth = getAuth(app);
-  db = getFirestore(app);
-} else {
-  app = null;
-  auth = null;
-  db = null;
-}
+app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+auth = getAuth(app);
+db = getFirestore(app);
 
 export { app, auth, db };
 export default app;
