@@ -10,6 +10,7 @@ export default function ProductCard({ product }) {
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [metersAnimated, setMetersAnimated] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const { cart, addToCart, updateQuantity } = useCart();
   const { showToast } = useToast();
 
@@ -35,6 +36,7 @@ export default function ProductCard({ product }) {
   }, []);
 
   const handleAddToCart = useCallback(() => {
+    setIsNavigating(true);
     addToCart({
       id: product.id,
       name: product.name,
@@ -43,7 +45,11 @@ export default function ProductCard({ product }) {
       price: product.price,
       image: product.image || null,
     });
-    router.push('/checkout');
+    
+    // Slight delay to ensure cart state flushes to localStorage before page unmount
+    setTimeout(() => {
+      router.push('/checkout');
+    }, 400);
   }, [addToCart, router, product]);
 
   // Energy and protein percentages (for meter fill bars)
@@ -231,8 +237,13 @@ export default function ProductCard({ product }) {
             >+</button>
           </div>
         ) : (
-          <button className="pcard__btn" onClick={handleAddToCart}>
-            Add to Cart
+          <button 
+            className="pcard__btn" 
+            onClick={handleAddToCart}
+            disabled={isNavigating}
+            style={isNavigating ? { opacity: 0.7, cursor: 'wait' } : {}}
+          >
+            {isNavigating ? "PROCESSING..." : "Order Now"}
           </button>
         )}
       </div>

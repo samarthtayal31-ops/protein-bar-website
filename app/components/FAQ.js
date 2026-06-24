@@ -33,7 +33,7 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" style={{ padding: '6rem 0', background: 'transparent' }}>
+    <section id="faq" style={{ padding: '6rem 0', background: 'rgba(5, 3, 2, 0.85)' }}>
       <div className="container" style={{ maxWidth: '800px' }}>
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <span className="text-gold" style={{ fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem' }}>GOT QUESTIONS?</span>
