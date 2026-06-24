@@ -467,8 +467,9 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.aura-container:hover .spiral-aura,
-.aura-container:hover .spiral-aura::before,
-.aura-container:hover .spiral-aura::after {
+.aura-wrapper:hover .spiral-aura,
+.aura-wrapper:hover .spiral-aura::before,
+.aura-wrapper:hover .spiral-aura::after {
+  -webkit-animation-play-state: paused;
   animation-play-state: paused;
 }

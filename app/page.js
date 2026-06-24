@@ -193,10 +193,12 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="aura-container" style={{ position: 'relative', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle, rgba(192,120,53,0.1) 0%, transparent 70%)' }}>
-            <div className="spiral-aura"></div>
-            <div style={{ position: 'relative', zIndex: 2, width: '200px', height: '200px', borderRadius: '50%', background: 'var(--hazel)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 50px rgba(192, 120, 53, 0.3)' }}>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '3rem', letterSpacing: '2px' }}>100% REAL</span>
+          <div style={{ position: 'relative', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle, rgba(192,120,53,0.1) 0%, transparent 70%)' }}>
+            <div className="aura-wrapper" style={{ position: 'relative', width: '280px', height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              <div className="spiral-aura"></div>
+              <div style={{ position: 'relative', zIndex: 2, width: '200px', height: '200px', borderRadius: '50%', background: 'var(--hazel)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 50px rgba(192, 120, 53, 0.3)' }}>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '3rem', letterSpacing: '2px' }}>100% REAL</span>
+              </div>
             </div>
           </div>
         </div>
