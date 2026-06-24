@@ -9,13 +9,7 @@ export default function Footer() {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    
-    // Strict email regex validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
-      return;
-    }
+    if (!email) return;
     
     setStatus('loading');
     
@@ -31,7 +25,7 @@ export default function Footer() {
     }, 1000);
   };
   return (
-    <footer style={{ background: 'rgba(5, 3, 2, 0.85)', borderTop: '1px solid var(--border)', paddingTop: '6rem', paddingBottom: '2rem' }}>
+    <footer style={{ background: 'transparent', borderTop: '1px solid var(--border)', paddingTop: '6rem', paddingBottom: '2rem' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem', marginBottom: '4rem' }}>
           
