@@ -3,8 +3,10 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
+import { useRouter } from 'next/navigation';
 
 export default function ProductCard({ product }) {
+  const router = useRouter();
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [metersAnimated, setMetersAnimated] = useState(false);
@@ -41,8 +43,8 @@ export default function ProductCard({ product }) {
       price: product.price,
       image: product.image || null,
     });
-    showToast(`${product.name} added to cart!`, 'success');
-  }, [addToCart, showToast, product]);
+    router.push('/checkout');
+  }, [addToCart, router, product]);
 
   // Energy and protein percentages (for meter fill bars)
   const energyPercent = product.energyPercent || Math.min((product.energy || 200) / 5, 100);
