@@ -11,19 +11,7 @@ const FREE_DELIVERY_THRESHOLD = 500;
 const DELIVERY_FEE = 50;
 const COD_FEE = 40;
 
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    if (typeof window !== 'undefined' && window.Razorpay) {
-      resolve(true);
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
+
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -39,7 +27,7 @@ export default function CheckoutPage() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [pinCode, setPinCode] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('online');
+  const [paymentMethod, setPaymentMethod] = useState('cod');
   const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -120,83 +108,7 @@ export default function CheckoutPage() {
     paymentMethod,
   });
 
-  const handleOnlinePayment = async () => {
-    setIsProcessing(true);
-    try {
-      const res = await loadRazorpay();
-      if (!res) {
-        showToast('Failed to load payment gateway. Please try again.', 'error');
-        setIsProcessing(false);
-        return;
-      }
 
-      // Create Razorpay order on backend
-      const orderRes = await fetch('/api/payments/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total, orderData: buildOrderData() }),
-      });
-
-      if (!orderRes.ok) {
-        throw new Error('Failed to create payment order');
-      }
-
-      const { razorpayOrderId, orderId } = await orderRes.json();
-
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_demo',
-        amount: total * 100,
-        currency: 'INR',
-        name: 'FuelBar',
-        description: 'Protein Bar Order',
-        order_id: razorpayOrderId,
-        handler: async function (response) {
-          try {
-            // Verify payment on server
-            const verifyRes = await fetch('/api/payments/verify', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderId,
-              }),
-            });
-
-            if (verifyRes.ok) {
-              clearCart();
-              showToast('Payment successful! 🎉', 'success');
-              router.push(`/order-success/${orderId}`);
-            } else {
-              showToast('Payment verification failed. Contact support.', 'error');
-            }
-          } catch {
-            showToast('Payment verification error. Contact support.', 'error');
-          }
-          setIsProcessing(false);
-        },
-        prefill: {
-          name: name.trim(),
-          email: email.trim(),
-          contact: `+91${phone.trim()}`,
-        },
-        theme: { color: '#C07835' },
-        modal: {
-          ondismiss: () => {
-            setIsProcessing(false);
-          },
-        },
-      };
-
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.open();
-    } catch (error) {
-      console.error('Payment error:', error);
-      showToast('Payment failed. Please try again.', 'error');
-      setIsProcessing(false);
-    }
-  };
 
   const handleCODOrder = async () => {
     setIsProcessing(true);
@@ -228,11 +140,7 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (paymentMethod === 'online') {
-      handleOnlinePayment();
-    } else {
-      handleCODOrder();
-    }
+    handleCODOrder();
   };
 
   const handleWhatsAppOrder = () => {
@@ -436,25 +344,7 @@ export default function CheckoutPage() {
             </h2>
 
             <div className="checkout__payment-options">
-              <label
-                className={`checkout__payment-option${paymentMethod === 'online' ? ' selected' : ''}`}
-                htmlFor="pay-online"
-              >
-                <input
-                  type="radio"
-                  id="pay-online"
-                  name="payment"
-                  value="online"
-                  checked={paymentMethod === 'online'}
-                  onChange={() => setPaymentMethod('online')}
-                />
-                <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>Pay Online (UPI, Cards, Wallets)</div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--muted)', marginTop: '0.2rem' }}>
-                    Secure payment via Razorpay
-                  </div>
-                </div>
-              </label>
+
 
               <label
                 className={`checkout__payment-option${paymentMethod === 'cod' ? ' selected' : ''}`}
