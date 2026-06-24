@@ -419,3 +419,47 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   .genz__grid{grid-template-columns:1fr 1fr;}
   .admin-stat-grid{grid-template-columns:1fr;}
 }
+
+/* ─── GLOBAL UTILITIES ───────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.spiral-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px dashed var(--gold);
+  animation: spin 15s linear infinite;
+  opacity: 0.3;
+}
+.spiral-aura::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px; bottom: -20px; left: -20px;
+  border-radius: 50%;
+  border: 1px dashed var(--hazel);
+  animation: spin 20s linear infinite reverse;
+  opacity: 0.5;
+}
+.spiral-aura::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px; bottom: -40px; left: -40px;
+  border-radius: 50%;
+  border: 1px dotted var(--amber);
+  animation: spin 25s linear infinite;
+  opacity: 0.2;
+}
+
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
