@@ -436,27 +436,30 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  border: 1px dashed var(--gold);
+  border: 2px dashed var(--gold);
   animation: spin 15s linear infinite;
-  opacity: 0.3;
+  opacity: 0.8;
+  box-shadow: 0 0 20px rgba(232, 168, 48, 0.4), inset 0 0 20px rgba(232, 168, 48, 0.4);
 }
 .spiral-aura::before {
   content: '';
   position: absolute;
-  top: -20px; right: -20px; bottom: -20px; left: -20px;
+  top: -25px; right: -25px; bottom: -25px; left: -25px;
   border-radius: 50%;
-  border: 1px dashed var(--hazel);
+  border: 2px dashed var(--hazel);
   animation: spin 20s linear infinite reverse;
-  opacity: 0.5;
+  opacity: 0.9;
+  box-shadow: 0 0 30px rgba(192, 120, 53, 0.5), inset 0 0 30px rgba(192, 120, 53, 0.5);
 }
 .spiral-aura::after {
   content: '';
   position: absolute;
-  top: -40px; right: -40px; bottom: -40px; left: -40px;
+  top: -50px; right: -50px; bottom: -50px; left: -50px;
   border-radius: 50%;
-  border: 1px dotted var(--amber);
+  border: 2px dotted var(--amber);
   animation: spin 25s linear infinite;
-  opacity: 0.2;
+  opacity: 0.7;
+  box-shadow: 0 0 40px rgba(245, 190, 80, 0.3), inset 0 0 40px rgba(245, 190, 80, 0.3);
 }
 
 @keyframes spin {
