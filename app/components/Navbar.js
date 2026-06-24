@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { cartCount, toggleCart } = useCart();
   const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   const navLinks = [
     { label: 'Products', href: '/#products' },
@@ -18,12 +20,7 @@ export default function Navbar() {
   ];
 
   const handleOrderNow = () => {
-    const el = document.getElementById('products');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.href = '/#products';
-    }
+    router.push('/checkout');
   };
 
   return (
