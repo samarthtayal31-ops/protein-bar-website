@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { products, getProductsByFlavor } from '@/app/lib/products';
 import ProductCard from '@/app/components/ProductCard';
 import FadeIn from '@/app/components/FadeIn';
+import FAQ from '@/app/components/FAQ';
 
 export default function Home() {
   const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
@@ -203,6 +204,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <FAQ />
 
       {/* CTA SECTION */}
       <section id="delivery" style={{ padding: '8rem 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
