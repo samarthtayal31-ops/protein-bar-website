@@ -6,6 +6,7 @@ import { products, getProductsByFlavor } from '@/app/lib/products';
 import ProductCard from '@/app/components/ProductCard';
 import FadeIn from '@/app/components/FadeIn';
 import FAQ from '@/app/components/FAQ';
+import Reviews from '@/app/components/Reviews';
 
 export default function Home() {
   const [flavorTab, setFlavorTab] = useState('choc-hazelnut');
@@ -205,6 +206,7 @@ export default function Home() {
         </div>
       </section>
 
+      <Reviews />
       <FAQ />
 
       {/* CTA SECTION */}
