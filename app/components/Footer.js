@@ -25,7 +25,7 @@ export default function Footer() {
     }, 1000);
   };
   return (
-    <footer style={{ background: '#050302', borderTop: '1px solid var(--border)', paddingTop: '6rem', paddingBottom: '2rem' }}>
+    <footer style={{ background: 'transparent', borderTop: '1px solid var(--border)', paddingTop: '6rem', paddingBottom: '2rem' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem', marginBottom: '4rem' }}>
           

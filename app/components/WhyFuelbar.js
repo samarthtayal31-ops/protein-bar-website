@@ -44,7 +44,7 @@ const features = [
 
 export default function WhyFuelbar() {
   return (
-    <section id="why" style={{ padding: '8rem 0', background: 'var(--bg)', position: 'relative' }}>
+    <section id="why" style={{ padding: '8rem 0', background: 'transparent', position: 'relative' }}>
       <div className="container">
         
         {/* Header */}
