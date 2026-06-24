@@ -1,8 +1,29 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setStatus('loading');
+    
+    // Simulate API call
+    setTimeout(() => {
+      setStatus('success');
+      setEmail('');
+      
+      // Reset after 3 seconds
+      setTimeout(() => {
+        setStatus('idle');
+      }, 3000);
+    }, 1000);
+  };
   return (
     <footer style={{ background: '#050302', borderTop: '1px solid var(--border)', paddingTop: '6rem', paddingBottom: '2rem' }}>
       <div className="container">
@@ -52,14 +73,31 @@ export default function Footer() {
           <div>
             <h4 style={{ color: '#fff', fontWeight: 800, marginBottom: '1.5rem', letterSpacing: '1px' }}>JOIN THE CLUB</h4>
             <p style={{ color: 'var(--muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>Subscribe for exclusive drops, fitness tips, and 10% off your first order.</p>
-            <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', gap: '0.5rem' }}>
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem' }}>
               <input 
                 type="email" 
                 placeholder="Enter your email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 style={{ flex: 1, padding: '0.8rem 1rem', borderRadius: '0.5rem', border: '1px solid var(--border)', background: 'var(--surface)', color: '#fff', outline: 'none' }}
               />
-              <button type="submit" style={{ padding: '0.8rem 1.5rem', borderRadius: '0.5rem', background: 'var(--gold)', color: 'var(--bg)', fontWeight: 800, border: 'none', cursor: 'pointer', transition: 'opacity 0.2s' }}>
-                Join
+              <button 
+                type="submit" 
+                disabled={status === 'loading' || status === 'success'}
+                style={{ 
+                  padding: '0.8rem 1.5rem', 
+                  borderRadius: '0.5rem', 
+                  background: status === 'success' ? '#6fcf72' : 'var(--gold)', 
+                  color: 'var(--bg)', 
+                  fontWeight: 800, 
+                  border: 'none', 
+                  cursor: status === 'loading' ? 'wait' : 'pointer', 
+                  transition: 'all 0.2s',
+                  opacity: status === 'loading' ? 0.7 : 1
+                }}
+              >
+                {status === 'loading' ? '...' : status === 'success' ? 'Joined ✓' : 'Join'}
               </button>
             </form>
           </div>
